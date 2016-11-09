@@ -23,14 +23,41 @@ popd
 An example directory structure
 
 ```
-launcher.yml
-ansible.cfg
-roles/
-projects/
-ansible-dynamic-launcher/
-  executor.py
-  boot.cfg
-  < -- run from here --> 
+├── ansible.cfg
+├── ansible-dynamic-launcher
+│   ├── boot.cfg
+│   ├── executor.py
+│   ├── lib
+│   │   ├── callbacks.py
+│   │   └── __init__.py
+│   ├── README.md
+│   └── requirements.txt
+├── keys
+│   ├── goldmaster_key
+│   └── goldmaster_key.pub
+├── launcher.retry
+├── launcher.yml
+├── README.md
+├── requirements.txt
+└── roles
+    └── clean_disk
+        ├── defaults
+        │   └── main.yml
+        ├── files
+        │   └── disk_space.py
+        ├── handlers
+        │   └── main.yml
+        ├── meta
+        │   └── main.yml
+        ├── README.md
+        ├── tasks
+        │   └── main.yml
+        ├── templates
+        ├── tests
+        │   ├── inventory
+        │   └── test.yml
+        └── vars
+            └── main.yml
 ```
 
 
