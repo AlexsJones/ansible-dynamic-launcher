@@ -34,13 +34,13 @@ class Boot(object):
         with open("boot.cfg","r") as f:
             self.configuration = yaml.load(f)
 
-    def scan(self,range='10.65.82.60-100'):
+    def scan(self,range):
         self.nm.scan(range,arguments=self.configuration['configuration']
                 ['scan_args'])
         self.hosts = self.nm.all_hosts()
         if not self.hosts:
             print("No hosts found")
-            sys.exit()
+            sys.exit(1)
 
         inventory_template = jinja2.Template(self.inventory)
         rendered_inventory = inventory_template.render({
@@ -91,11 +91,11 @@ class Boot(object):
             if tqm is not None:
                 tqm.cleanup()
 
-    def execute_boot(self):        
-        playbook_path = 'boot.yml'
+    def execute_boot(self,playbook_path):        
+        playbook_path = playbook_path
         if not os.path.exists(playbook_path):
-            print('[INFO] The playbook does not exist')
-            sys.exit()
+            print('The playbook does not exist')
+            sys.exit(1)
         
         self.variable_manager.extra_vars = {'hosts': 'DYNAMIC'} 
         pbex = PlaybookExecutor(playbooks=[playbook_path], 
@@ -113,6 +113,8 @@ if __name__ == "__main__":
             help ="Argument of module running")
     parser.add_option("-r","--range",
             help ="an nmap friendly host range to scan e.g. 127.0.0.1-100")
+    parser.add_option("-p","--path",
+            help="path of the playbook to run - relative")
 
     (options,args) = parser.parse_args()
 
@@ -121,9 +123,13 @@ if __name__ == "__main__":
     if options.range:
         b.scan(options.range)
     else:
-        b.scan(b.configuration['configuration']['scan_range'])
-
+        print("Requires --range of hosts in nmap format e.g. 10.0.0.1-100")
+        sys.exit(1)
     if options.module:
         b.execute_module(options.module, options.args)
     else:
-        b.execute_boot()
+        if options.path: 
+            b.execute_boot(options.path)
+        else:
+            print("Cannot run without a playbook")
+            sys.exit(1)
