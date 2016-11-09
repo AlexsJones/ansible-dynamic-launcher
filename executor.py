@@ -54,16 +54,20 @@ class Boot(object):
                 variable_manager=self.variable_manager,  
                 host_list=hosts.name)
 
+        #There are many more options that could be added here
         self.options = Boot.options(listtags=False, listtasks=False, listhosts=False, 
-                syntax=False, connection='ssh', module_path=None, forks=100, 
+                syntax=self.configuration['configuration']['syntax'], 
+                connection='ssh', module_path=None, forks=100, 
                 remote_user=self.configuration['configuration']['remote_user'],
-                private_key_file=self.configuration['configuration']['private_key_file']
-                ,ssh_common_args=None, 
-                ssh_extra_args=None, sftp_extra_args=None, scp_extra_args=None, 
+                private_key_file=self.configuration['configuration']['private_key_file'],
+                ssh_common_args=None, 
+                ssh_extra_args=None, sftp_extra_args=None, 
+                scp_extra_args=None, 
                 become=True, become_method=None, 
                 become_user=self.configuration['configuration']
                 ['become_user'], 
-                verbosity=3, check=False)
+                verbosity=3, 
+                check=False)
 
         self.passwords = {}
 
