@@ -7,7 +7,9 @@ This is a work in progress, I'll add features as needed
 ###Example
 
 ```
+pushd ansible-dynamic-launcher
 python executor.py --range 192.168.1-20 --module shell --args 'ls -la'
+popd
 ```
 
 Or run a playbook
@@ -16,18 +18,22 @@ Or run a playbook
 - make sure the ansible.cfg has your roles relative path as normal
 
 ```
+pushd ansible-dynamic-launcher
 python executor.py --name 'boot.yml' --range 10.0.0.1-40
+popd
 ```
 
 An example directory structure
 
 ```
+launcher.yml
+ansible.cfg
 roles/
 projects/
-launcher.yml
-executor.py
-ansible.cfg
-boot.cfg
+ansible-dynamic-launcher/
+  executor.py
+  ansible.cfg #Potentially just symlink this from the root directory into the submodule
+  boot.cfg
 
 ```
 
