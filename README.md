@@ -7,25 +7,19 @@ This is a work in progress, I'll add features as needed
 ###Example
 
 ```
-pushd ansible-dynamic-launcher
-python executor.py --range 192.168.1-20 --module shell --args 'ls -la'
-popd
+python ansible-dynamic-launcher executor.py --range 192.168.1-20 --module shell --args 'ls -la'
 ```
 
 Or run a playbook
 
 ```
-pushd ansible-dynamic-launcher
-python executor.py --name 'boot.yml' --range 10.0.0.1-40 --path ../launcher.yml
-popd
+python ansibl-dynamic-launcher/executor.py --name 'boot.yml' --range 10.0.0.1-40 --workingdir .
 ```
 
 An example directory structure
 
 ```
-├── ansible.cfg
 ├── ansible-dynamic-launcher
-│   ├── boot.cfg
 │   ├── executor.py
 │   ├── lib
 │   │   ├── callbacks.py
@@ -60,7 +54,5 @@ An example directory structure
             └── main.yml
 ```
 
-
-####Settings
-
-boot.cfg needs a few settings (namely the ssh settings ansible would have in the .cfg)
+####Assumptions
+Assumes your ansible.cfg is in the working directory
