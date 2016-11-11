@@ -12,7 +12,7 @@ from ansible.executor.task_queue_manager import TaskQueueManager
 from ansible.playbook.play import Play
 import nmap
 import yaml
-
+import configobj
 
 class Boot(object):
 
@@ -22,7 +22,7 @@ class Boot(object):
         'sftp_extra_args', 'scp_extra_args', 'become', 'become_method', 
         'become_user', 'verbosity', 'check'])
 
-    def __init__(self):
+    def __init__(self,working_dir):
         self.variable_manager = VariableManager()
         self.loader = DataLoader()
         self.nm = nmap.PortScanner()
@@ -31,12 +31,12 @@ class Boot(object):
                     [DYNAMIC]
                     {{ host_list }}
                     """
-        with open("boot.cfg","r") as f:
-            self.configuration = yaml.load(f)
+    
+        os.chdir(working_dir)
+        self.con = configobj.ConfigObj('ansible.cfg')
 
     def scan(self,range):
-        self.nm.scan(range,arguments=self.configuration['configuration']
-                ['scan_args'])
+        self.nm.scan(range,arguments=self.con['defaults']['scan_args'])
         self.hosts = self.nm.all_hosts()
         if not self.hosts:
             print("No hosts found")
@@ -54,17 +54,18 @@ class Boot(object):
                 variable_manager=self.variable_manager,  
                 host_list=hosts.name)
 
+        print(self.con['defaults']['syntax'])
         #There are many more options that could be added here
         self.options = Boot.options(listtags=False, listtasks=False, listhosts=False, 
-                syntax=self.configuration['configuration']['syntax'], 
+                syntax=self.con.get('defaults').as_bool('syntax'), 
                 connection='ssh', module_path=None, forks=100, 
-                remote_user=self.configuration['configuration']['remote_user'],
-                private_key_file=self.configuration['configuration']['private_key_file'],
+                remote_user=self.con['defaults']['remote_user'],
+                private_key_file=self.con['defaults']['private_key_file'],
                 ssh_common_args=None, 
                 ssh_extra_args=None, sftp_extra_args=None, 
                 scp_extra_args=None, 
                 become=True, become_method=None, 
-                become_user=self.configuration['configuration']
+                become_user=self.con['defaults']
                 ['become_user'], 
                 verbosity=3, 
                 check=False)
@@ -81,7 +82,8 @@ class Boot(object):
                         register="shell_out")
                         ]
                 )
-        play = Play().load(play_source, variable_manager=self.variable_manager, loader=self.loader)
+        play = Play().load(play_source, variable_manager=self.variable_manager,
+                loader=self.loader)
         tqm = None
         try:
             tqm = TaskQueueManager(
@@ -117,12 +119,18 @@ if __name__ == "__main__":
             help ="Argument of module running")
     parser.add_option("-r","--range",
             help ="an nmap friendly host range to scan e.g. 127.0.0.1-100")
-    parser.add_option("-p","--path",
-            help="path of the playbook to run - relative")
+    parser.add_option("-n","--name",
+            help="name of the playbook to run e.g. boot.yml")
 
+    parser.add_option("-w","--workingdir",
+            help="working dir with ansible.cfg in the root")
     (options,args) = parser.parse_args()
 
-    b = Boot()
+    if not options.workingdir:
+        print("Requires working directory set")
+        sys.exit(1)
+
+    b = Boot(options.workingdir)
 
     if options.range:
         b.scan(options.range)
@@ -132,8 +140,8 @@ if __name__ == "__main__":
     if options.module:
         b.execute_module(options.module, options.args)
     else:
-        if options.path: 
-            b.execute_boot(options.path)
+        if options.name: 
+            b.execute_boot(options.name)
         else:
             print("Cannot run without a playbook")
             sys.exit(1)
