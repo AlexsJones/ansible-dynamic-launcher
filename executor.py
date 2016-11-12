@@ -11,7 +11,6 @@ from optparse import OptionParser
 from ansible.executor.task_queue_manager import TaskQueueManager
 from ansible.playbook.play import Play
 import nmap
-import yaml
 import configobj
 
 class Boot(object):

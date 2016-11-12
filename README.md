@@ -56,3 +56,8 @@ An example directory structure
 
 ####Assumptions
 Assumes your ansible.cfg is in the working directory
+
+
+####Requirements
+- nmap installed on system
+- virtualenv for packages
