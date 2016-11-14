@@ -1,19 +1,18 @@
 #ansible-dynamic-launcher
+When you want to run roles on a dynamic range of hosts, use this - it passes through commands and hooks into ansible.cfg
 
-For those times you don't have fixed host lists
-
-This is a work in progress, I'll add features as needed
+Simply download this as a submodule and run it (Might need to check deps).
 
 ###Example
 
 ```
-python ansible-dynamic-launcher/executor.py --range 192.168.1-20 --module shell --args 'ls -la' --workingdir .
+python executor.py --range 192.168.1-20 --module shell --args 'ls -la' --workingdir ../
 ```
 
 Or run a playbook
 
 ```
-python ansibl-dynamic-launcher/executor.py --name 'boot.yml' --range 10.0.0.1-40 --workingdir --args "role=clean_disk".
+python executor.py --name 'boot.yml' --range 10.0.0.1-40 --workingdir ../ --args "role=clean_disk"
 ```
 
 An example directory structure
@@ -27,36 +26,14 @@ An example directory structure
 │   ├── README.md
 │   └── requirements.txt
 ├── keys
-│   ├── goldmaster_key
-│   └── goldmaster_key.pub
-├── launcher.retry
+│   ├──my_key
 ├── launcher.yml
 ├── README.md
 ├── requirements.txt
 └── roles
     └── clean_disk
-        ├── defaults
-        │   └── main.yml
-        ├── files
-        │   └── disk_space.py
-        ├── handlers
-        │   └── main.yml
-        ├── meta
-        │   └── main.yml
-        ├── README.md
-        ├── tasks
-        │   └── main.yml
-        ├── templates
-        ├── tests
-        │   ├── inventory
-        │   └── test.yml
-        └── vars
-            └── main.yml
+
 ```
-
-####Assumptions
-Assumes your ansible.cfg is in the working directory
-
 
 ####Requirements
 - nmap installed on system
@@ -64,7 +41,23 @@ Assumes your ansible.cfg is in the working directory
 
 ###Configuration 
 
-ansible.cfg
+```
+Usage: executor.py [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -m MODULE, --module=MODULE
+                        Name of ansible module to run
+  -a ARGS, --args=ARGS  Argument of module running
+  -r RANGE, --range=RANGE
+                        an nmap friendly host range to scan e.g. 127.0.0.1-100
+  -n NAME, --name=NAME  name of the playbook to run e.g. boot.yml
+  -w WORKINGDIR, --workingdir=WORKINGDIR
+                        working dir with ansible.cfg in the root
+```
+As long as the --workingdir points to your ansible.cfg directory and --name is the name (not path) of your boot yml in that file, you're ready to go...
+
+And add this to your ansible.cfg
 
 ```
 scan_args='-sP'  #nmap arguments
