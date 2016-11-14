@@ -19,9 +19,10 @@ python executor.py --name 'boot.yml' --range 10.0.0.1-40 --workingdir ../ --args
 ####Note you can make far more complex range scans by just editing the nmap args in the config.
 
 
-An example directory structure
+An example directory structure in a project using this as a submodule
 
 ```
+├── ansible.cfg
 ├── ansible-dynamic-launcher
 │   ├── executor.py
 │   ├── lib
@@ -30,7 +31,8 @@ An example directory structure
 │   ├── README.md
 │   └── requirements.txt
 ├── keys
-│   ├──my_key
+│   ├── goldmaster_key
+│   └── goldmaster_key.pub
 ├── launcher.yml
 ├── README.md
 ├── requirements.txt
