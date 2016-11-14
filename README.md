@@ -13,7 +13,7 @@ python ansible-dynamic-launcher/executor.py --range 192.168.1-20 --module shell 
 Or run a playbook
 
 ```
-python ansibl-dynamic-launcher/executor.py --name 'boot.yml' --range 10.0.0.1-40 --workingdir .
+python ansibl-dynamic-launcher/executor.py --name 'boot.yml' --range 10.0.0.1-40 --workingdir --args "role=clean_disk".
 ```
 
 An example directory structure

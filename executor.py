@@ -12,6 +12,8 @@ from ansible.executor.task_queue_manager import TaskQueueManager
 from ansible.playbook.play import Play
 import nmap
 import configobj
+import re 
+
 
 class Boot(object):
 
@@ -96,13 +98,22 @@ class Boot(object):
             if tqm is not None:
                 tqm.cleanup()
 
-    def execute_boot(self,playbook_path):        
+    def execute_boot(self,playbook_path,args):        
         playbook_path = playbook_path
         if not os.path.exists(playbook_path):
             print('The playbook does not exist')
             sys.exit(1)
         
-        self.variable_manager.extra_vars = {'hosts': 'DYNAMIC'} 
+        default_vars = {'hosts': 'DYNAMIC'} 
+        
+        if args:
+            regex = re.compile(r"\b(\w+)\s*=\s*([^=]*)(?=\s+\w+\s*:|$)")
+            d = dict(regex.findall(args))
+            print("Passing through extra vars: " + str(d))
+            default_vars.update(d)
+            
+        self.variable_manager.extra_vars = default_vars 
+
         pbex = PlaybookExecutor(playbooks=[playbook_path], 
                 inventory=self.inventory, 
                 variable_manager=self.variable_manager, 
@@ -140,7 +151,7 @@ if __name__ == "__main__":
         b.execute_module(options.module, options.args)
     else:
         if options.name: 
-            b.execute_boot(options.name)
+            b.execute_boot(options.name,options.args)
         else:
             print("Cannot run without a playbook")
             sys.exit(1)
