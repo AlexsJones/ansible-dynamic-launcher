@@ -1,3 +1,4 @@
+![ansible](https://i.imgur.com/p1o5UUY.png)
 #ansible-dynamic-launcher
 When you want to run roles on a dynamic range of hosts, use this - it passes through commands and hooks into ansible.cfg
 
