@@ -7,7 +7,7 @@ This is a work in progress, I'll add features as needed
 ###Example
 
 ```
-python ansible-dynamic-launcher executor.py --range 192.168.1-20 --module shell --args 'ls -la'
+python ansible-dynamic-launcher/executor.py --range 192.168.1-20 --module shell --args 'ls -la' --workingdir .
 ```
 
 Or run a playbook
@@ -61,3 +61,13 @@ Assumes your ansible.cfg is in the working directory
 ####Requirements
 - nmap installed on system
 - virtualenv for packages
+
+###Configuration 
+
+ansible.cfg
+
+```
+scan_args='-sP'  #nmap arguments
+syntax=False
+private_key_file= #required for passwordless SSH
+```
