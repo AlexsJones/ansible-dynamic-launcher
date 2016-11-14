@@ -61,7 +61,7 @@ Options:
   -w WORKINGDIR, --workingdir=WORKINGDIR
                         working dir with ansible.cfg in the root
 ```
-As long as the --workingdir points to your ansible.cfg directory and --name is the name (not path) of your boot yml in that file, you're ready to go...
+As long as the --workingdir points to your ansible.cfg directory and --name is the name (not path) of your playbook yml in that file, you're ready to go...
 
 And add this to your ansible.cfg
 
