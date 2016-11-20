@@ -1,0 +1,10 @@
+Package: ansible-dynamic-launcher
+Version: 0.01
+Architecture: all
+Maintainer: AlexJones<tibbar@freedommail.ch>
+Installed-Size: 2
+Depends: python, nmap, python-jinja2, python-configobj, ansible
+Section: extras
+Priority: optional
+Homepage: https://github.com/AlexsJones/ansible-dynamic-launcher.git
+Description: A script for ansible with dynamic hosts
