@@ -44,7 +44,6 @@ An example directory structure in a project using this as a submodule
 ####Requirements
 - openssl-dev installed
 - nmap installed on system
-- virtualenv for packages
 
 ###Configuration 
 
