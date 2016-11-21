@@ -1,0 +1,5 @@
+ansible-dynamic-launcher (0.1) xenial; urgency=medium
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Alex s Jones <tibbar@freedommail.ch>  Sun, 20 Nov 2016 19:07:10 +0000
