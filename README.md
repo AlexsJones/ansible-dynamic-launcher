@@ -9,8 +9,8 @@ Simply download this as a submodule and run it (Might need to check deps).
 
 - clone this repo as a submodule
 - `build_packages.sh` and install with `dpkg`
-- `wget https://github.com/AlexsJones/ansible-dynamic-launcher/blob/master/executor.py`
-- `curl -O https://github.com/AlexsJones/ansible-dynamic-launcher/blob/master/executor.py`
+- `wget -O ansible-dynamic-launcher.py https://raw.githubusercontent.com/AlexsJones/ansible-dynamic-launcher/master/executor.py`
+- `curl -o ansible-dynamic-launcher.py https://raw.githubusercontent.com/AlexsJones/ansible-dynamic-launcher/master/executor.py`
 
 ###Example
 
