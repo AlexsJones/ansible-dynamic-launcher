@@ -4,6 +4,14 @@ When you want to run roles on a dynamic range of hosts, use this - it passes thr
 
 Simply download this as a submodule and run it (Might need to check deps).
 
+
+###Download
+
+- clone this repo as a submodule
+- `build_packages.sh` and install with `dpkg`
+- `wget https://github.com/AlexsJones/ansible-dynamic-launcher/blob/master/executor.py`
+- `curl -O https://github.com/AlexsJones/ansible-dynamic-launcher/blob/master/executor.py`
+
 ###Example
 
 ```
