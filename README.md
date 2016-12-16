@@ -53,6 +53,8 @@ An example directory structure in a project using this as a submodule
 - openssl-dev installed
 - nmap installed on system
 
+Or use `source env/bin/activate && pip install -r requirements`
+
 ###Configuration 
 
 ```
