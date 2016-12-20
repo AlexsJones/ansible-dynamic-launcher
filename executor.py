@@ -5,6 +5,7 @@ import jinja2
 from collections import namedtuple
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars import VariableManager
+from ansible.plugins.callback import CallbackBase
 from ansible.inventory import Inventory
 from ansible.executor.playbook_executor import PlaybookExecutor
 from tempfile import NamedTemporaryFile
@@ -14,8 +15,14 @@ from ansible.playbook.play import Play
 import nmap
 import configobj
 import re 
+import json
 
-
+class ResultCallback(CallbackBase):
+    
+    def v2_runner_on_ok(self, result, **kwargs):
+        host = result._host
+        print(json.dumps({host.name: result._result}))
+    
 class Boot(object):
 
     options = namedtuple('Options', ['listtags', 
@@ -25,6 +32,7 @@ class Boot(object):
         'become_user', 'verbosity', 'check'])
 
     def __init__(self,working_dir):
+        self.results_callback = ResultCallback()
         self.variable_manager = VariableManager()
         self.loader = DataLoader()
         self.nm = nmap.PortScanner()
@@ -56,7 +64,6 @@ class Boot(object):
                 variable_manager=self.variable_manager,  
                 host_list=hosts.name)
 
-        print(self.con['defaults']['syntax'])
         #There are many more options that could be added here
         self.options = Boot.options(listtags=False, listtasks=False, listhosts=False, 
                 syntax=self.con.get('defaults').as_bool('syntax'), 
@@ -93,7 +100,8 @@ class Boot(object):
                     variable_manager = self.variable_manager,
                     loader = self.loader,
                     options = self.options,
-                    passwords = self.passwords)
+                    passwords = self.passwords,
+                    stdout_callback=self.results_callback)
             result = tqm.run(play)
         finally:
             if tqm is not None:
@@ -119,7 +127,7 @@ class Boot(object):
                 inventory=self.inventory, 
                 variable_manager=self.variable_manager, 
                 loader=self.loader, options=self.options, passwords=self.passwords)
-
+        pbex._tqm._stdout_callback = self.results_callback
         results = pbex.run()
 
 if __name__ == "__main__":
