@@ -74,7 +74,7 @@ class Boot(object):
         'listtasks', 'listhosts', 'syntax', 'connection','module_path', 'forks', 
         'remote_user', 'private_key_file', 'ssh_common_args', 'ssh_extra_args', 
         'sftp_extra_args', 'scp_extra_args', 'become', 'become_method', 
-        'become_user', 'verbosity', 'check'])
+        'become_user', 'verbosity', 'check','remote_tmp'])
 
     def __init__(self,working_dir):
         self.results_callback = CallbackModule()
@@ -83,6 +83,10 @@ class Boot(object):
         self.nm = nmap.PortScanner()
         self.hosts = []
         self.inventory = """
+                    [local]
+                    127.0.0.1
+                    [local:vars]
+                    ansible_connection=local
                     [DYNAMIC]
                     {{ host_list }}
                     """
@@ -112,7 +116,7 @@ class Boot(object):
         #There are many more options that could be added here
         self.options = Boot.options(listtags=False, listtasks=False, listhosts=False, 
                 syntax=self.con.get('defaults').as_bool('syntax'), 
-                connection='ssh', module_path=None, forks=100, 
+                connection='smart', module_path=None, forks=100, 
                 remote_user=self.con['defaults']['remote_user'],
                 private_key_file=self.con['defaults']['private_key_file'],
                 ssh_common_args=None, 
@@ -122,7 +126,8 @@ class Boot(object):
                 become_user=self.con['defaults']
                 ['become_user'], 
                 verbosity=3, 
-                check=False)
+                check=False,
+                remote_tmp=self.con['defaults']['remote_tmp'])
 
         self.passwords = {}
 
