@@ -18,9 +18,10 @@ import nmap
 import configobj
 import re 
 import json
-
-
-
+from colorama import init
+init(strip=not sys.stdout.isatty()) # strip colors if stdout is redirected
+from termcolor import cprint 
+from pyfiglet import figlet_format
 from ansible.plugins.callback import CallbackBase
 from ansible import constants as C
 
@@ -181,6 +182,9 @@ class Boot(object):
         results = pbex.run()
 
 if __name__ == "__main__":
+
+    cprint(figlet_format('Ansible Dynamic Launcher', font='big'),
+                   'red', attrs=['bold'])
     parser = OptionParser()
     parser.add_option("-m","--module",
             help="Name of ansible module to run")
