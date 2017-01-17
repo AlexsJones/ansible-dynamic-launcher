@@ -1,3 +1,4 @@
+env
 *.retry
 *.pyc
 debian-package/usr/*
