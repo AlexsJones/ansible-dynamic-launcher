@@ -108,7 +108,7 @@ class Boot(object):
             })
 
         hosts = NamedTemporaryFile(delete=False)
-        hosts.write(rendered_inventory)
+        hosts.write(rendered_inventory.encode())
         hosts.close()
         self.inventory = Inventory(loader=self.loader, 
                 variable_manager=self.variable_manager,  
