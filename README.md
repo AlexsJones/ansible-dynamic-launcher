@@ -4,6 +4,8 @@ When you want to run roles on a dynamic range of hosts, use this - it passes thr
 
 Simply download this as a submodule and run it (Might need to check deps).
 
+*The -w needs to be specified to a path with a valid ansible.cfg*
+
 Example using showterm: http://showterm.io/a92ed411995b74f9b5fae#fast
 
 ###Download options
