@@ -1,5 +1,5 @@
 ![ansible](https://i.imgur.com/p1o5UUY.png)
-#ansible-dynamic-launcher
+# ansible-dynamic-launcher
 When you want to run roles on a dynamic range of hosts, use this - it passes through commands and hooks into ansible.cfg
 
 Simply download this as a submodule and run it (Might need to check deps).
@@ -8,14 +8,14 @@ Simply download this as a submodule and run it (Might need to check deps).
 
 Example using showterm: http://showterm.io/a92ed411995b74f9b5fae#fast
 
-###Download options
+### Download options
 
 - clone this repo as a submodule
 - `build_packages.sh` and install with `dpkg`
 - `wget -O ansible-dynamic-launcher.py https://raw.githubusercontent.com/AlexsJones/ansible-dynamic-launcher/master/executor.py`
 - `curl -o ansible-dynamic-launcher.py https://raw.githubusercontent.com/AlexsJones/ansible-dynamic-launcher/master/executor.py`
 
-###Example
+### Example
 
 ```
 python executor.py --range 192.168.1-20 --module shell --args 'ls -la' --workingdir ../
@@ -27,7 +27,7 @@ Or run a playbook
 python executor.py --name 'boot.yml' --range 10.0.0.1-40 --workingdir ../ --args "role=clean_disk"
 ```
 
-####Note you can make far more complex range scans by just editing the nmap args in the config.
+#### Note you can make far more complex range scans by just editing the nmap args in the config.
 
 
 An example directory structure in a project using this as a submodule
@@ -52,13 +52,13 @@ An example directory structure in a project using this as a submodule
 
 ```
 
-####Requirements
+#### Requirements
 - openssl-dev installed
 - nmap installed on system
 
 Or use `source env/bin/activate && pip install -r requirements`
 
-###Configuration 
+### Configuration 
 
 ```
 Usage: executor.py [options]
